@@ -126,9 +126,9 @@ public class MeadowApp : App<RaspberryPi>
         return labels.ToArray();
     }
 
-    public static void ExtractResourceToFile(string resourceName, string foldername, string filename)
+    public static void ExtractResourceToFile(string resourceName, string filename)
     {
-        Resolver.Log.Info($"Extracting resource {resourceName} to {foldername}/{filename}");
+        Resolver.Log.Info($"Extracting resource {resourceName} to {filename}");
 
         // Get the current assembly
         Assembly assembly = Assembly.GetExecutingAssembly();
@@ -140,12 +140,9 @@ public class MeadowApp : App<RaspberryPi>
             {
                 throw new FileNotFoundException("The specified embedded resource cannot be found.", resourceName);
             }
-            if (!Directory.Exists(foldername))
-            {
-                Directory.CreateDirectory(foldername);
-            }
+
             // Create the output file and write the resource to it
-            using (Stream fileStream = File.Create(Path.Combine(foldername, filename)))
+            using (Stream fileStream = File.Create(filename))
             {
                 resourceStream.CopyTo(fileStream);
             }
@@ -171,16 +168,16 @@ public class MeadowApp : App<RaspberryPi>
         context = new MLContext();
         mlData = context.Data.LoadFromEnumerable(new List<StopSignInput>());
 
-        modelLabels = LoadLabels("reTerminalApp.Model.labels.txt");
+        modelLabels = LoadLabels(Assembly.GetExecutingAssembly().GetName().Name+".labels.txt");
 
-        ExtractResourceToFile("reTerminalApp.Model.model.onnx", "./Model", "model2.onnx");
+        ExtractResourceToFile(Assembly.GetExecutingAssembly().GetName().Name + ".model.onnx", "model2.onnx");
 
         var pipeline = context.Transforms.ResizeImages(
             resizing: ImageResizingEstimator.ResizingKind.Fill,
             outputColumnName: "image_tensor",
             imageWidth: ImageSettings.imageWidth,
             imageHeight: ImageSettings.imageHeight,
-            inputColumnName: nameof(StopSignInput.image)).Append(context.Transforms.ExtractPixels(outputColumnName: "image_tensor")).Append(context.Transforms.ApplyOnnxModel(outputColumnNames: new string[] { "detected_boxes", "detected_scores", "detected_classes" }, inputColumnNames: new string[] { "image_tensor" }, modelFile: "./Model/model2.onnx"));
+            inputColumnName: nameof(StopSignInput.image)).Append(context.Transforms.ExtractPixels(outputColumnName: "image_tensor")).Append(context.Transforms.ApplyOnnxModel(outputColumnNames: new string[] { "detected_boxes", "detected_scores", "detected_classes" }, inputColumnNames: new string[] { "image_tensor" }, modelFile: "./model2.onnx"));
 
         model = pipeline.Fit(mlData);
 

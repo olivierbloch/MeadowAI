@@ -72,7 +72,7 @@ public class MeadowApp : App<Desktop>
         if (imageDisplayed)
         {
             Resolver.Log.Info("Running Onnx model on displayed image.");
-            var mlImage = LoadMLImage("MeadowDesktopAIApp.test."+imagesCollection[currentImage]);
+            var mlImage = LoadMLImage(Assembly.GetExecutingAssembly().GetName().Name+"."+imagesCollection[currentImage]);
             var prediction = predictionEngine!.Predict(new StopSignInput { image = mlImage });
             var boundingBoxes = prediction.BoundingBoxes.Chunk(prediction.BoundingBoxes.Count() / prediction.PredictedLabels.Count());
             var originalWidth = mlImage.Width;
@@ -140,14 +140,14 @@ public class MeadowApp : App<Desktop>
         context = new MLContext();
         mlData = context.Data.LoadFromEnumerable(new List<StopSignInput>());
 
-        modelLabels = LoadLabels("MeadowDesktopAIApp.Model.labels.txt");
+        modelLabels = LoadLabels("MeadowDesktopAIApp.labels.txt");
 
         var pipeline = context.Transforms.ResizeImages(
             resizing: ImageResizingEstimator.ResizingKind.Fill, 
             outputColumnName: "image_tensor", 
             imageWidth: ImageSettings.imageWidth, 
             imageHeight: ImageSettings.imageHeight, 
-            inputColumnName: nameof(StopSignInput.image)).Append(context.Transforms.ExtractPixels(outputColumnName: "image_tensor")).Append(context.Transforms.ApplyOnnxModel(outputColumnNames: new string[] { "detected_boxes", "detected_scores", "detected_classes" }, inputColumnNames: new string[] { "image_tensor" }, modelFile: "./Model/model.onnx"));
+            inputColumnName: nameof(StopSignInput.image)).Append(context.Transforms.ExtractPixels(outputColumnName: "image_tensor")).Append(context.Transforms.ApplyOnnxModel(outputColumnNames: new string[] { "detected_boxes", "detected_scores", "detected_classes" }, inputColumnNames: new string[] { "image_tensor" }, modelFile: "./model.onnx"));
 
         model = pipeline.Fit(mlData);
 

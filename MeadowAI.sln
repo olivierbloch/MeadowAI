@@ -22,6 +22,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Model", "Model", "{240B6FC6
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "reTerminalApp", "MeadowReTerminalAIApp\reTerminalApp.csproj", "{2598F698-E1AA-4330-9C5F-640A694DFEAA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{E981EA0D-3574-4AF7-BE53-FB417A56FBA6}"
+	ProjectSection(SolutionItems) = preProject
+		test\image1.bmp = test\image1.bmp
+		test\image2.bmp = test\image2.bmp
+		test\image3.bmp = test\image3.bmp
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

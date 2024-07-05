@@ -17,13 +17,13 @@
     </ItemGroup>
 
     <ItemGroup>
-        <EmbeddedResource Include="test\image1.bmp">
+        <EmbeddedResource Include="..\test\image1.bmp">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </EmbeddedResource>
-        <EmbeddedResource Include="test\image2.bmp">
+        <EmbeddedResource Include="..\test\image2.bmp">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </EmbeddedResource>
-        <EmbeddedResource Include="test\image3.bmp">
+        <EmbeddedResource Include="..\test\image3.bmp">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </EmbeddedResource>
 		<EmbeddedResource Include="..\Model\model.onnx">
