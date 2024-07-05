@@ -5,6 +5,23 @@ VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeadowDesktopAIApp", "MeadowDesktopAIApp\MeadowDesktopAIApp.csproj", "{20B76A94-5493-42FC-8C48-8541E4370AFF}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6A441006-A1FE-4FA2-A41D-D2B399254E79}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Model", "Model", "{240B6FC6-58A0-402E-998E-887C2D7002B1}"
+	ProjectSection(SolutionItems) = preProject
+		Model\cvexport.manifest = Model\cvexport.manifest
+		Model\labels.txt = Model\labels.txt
+		Model\LICENSE = Model\LICENSE
+		Model\metadata_properties.json = Model\metadata_properties.json
+		Model\model.onnx = Model\model.onnx
+		Model\README.md = Model\README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "reTerminalApp", "MeadowReTerminalAIApp\reTerminalApp.csproj", "{2598F698-E1AA-4330-9C5F-640A694DFEAA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +32,10 @@ Global
 		{20B76A94-5493-42FC-8C48-8541E4370AFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20B76A94-5493-42FC-8C48-8541E4370AFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20B76A94-5493-42FC-8C48-8541E4370AFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2598F698-E1AA-4330-9C5F-640A694DFEAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2598F698-E1AA-4330-9C5F-640A694DFEAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2598F698-E1AA-4330-9C5F-640A694DFEAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2598F698-E1AA-4330-9C5F-640A694DFEAA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
