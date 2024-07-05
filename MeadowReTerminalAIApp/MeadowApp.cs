@@ -77,7 +77,7 @@ public class MeadowApp : App<RaspberryPi>
         if (imageDisplayed)
         {
             Resolver.Log.Info("Running Onnx model on displayed image.");
-            var mlImage = LoadMLImage("reTerminalApp.test." + imagesCollection[currentImage]);
+            var mlImage = LoadMLImage(Assembly.GetExecutingAssembly().GetName().Name+"." + imagesCollection[currentImage]);
             var prediction = predictionEngine.Predict(new StopSignInput { image = mlImage });
             var boundingBoxes = prediction.BoundingBoxes.Chunk(prediction.BoundingBoxes.Count() / prediction.PredictedLabels.Count());
             var originalWidth = mlImage.Width;
