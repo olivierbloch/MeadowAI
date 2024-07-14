@@ -66,14 +66,20 @@ public class MeadowApp : App<Desktop>
         imageDisplayed = true;
     }
 
-    // Run Onnx model on currently displayed image
+    // Run Onnx model on currently displayed image and overlay bounding boxes on it
     private void RunModelOnCurrrentImage()
     {
         if (imageDisplayed)
         {
             Resolver.Log.Info("Running Onnx model on displayed image.");
+
+            // Load image from resources
             var mlImage = LoadMLImage(Assembly.GetExecutingAssembly().GetName().Name+"."+imagesCollection[currentImage]);
+
+            // Run model on image
             var prediction = predictionEngine!.Predict(new StopSignInput { image = mlImage });
+            
+            // Draw bounding boxes on image
             var boundingBoxes = prediction.BoundingBoxes.Chunk(prediction.BoundingBoxes.Count() / prediction.PredictedLabels.Count());
             var originalWidth = mlImage.Width;
             var originalHeight = mlImage.Height;
@@ -126,16 +132,19 @@ public class MeadowApp : App<Desktop>
     {
         Resolver.Log.Info("Initializing...");
 
+        // ---------------------
         // Initialize display
         Device.Display!.Resize(displayWidth, displayHeight, 1);
         displayController = new DisplayController(Device.Display!);
 
+        // ---------------------
         // Initialize input controller
         inputController = new InputController();
         inputController.NextRequested += (s, e) => NextImage();
         inputController.PreviousRequested += (s, e) => PreviousImage();
         inputController.EnterRequested += (s, e) => RunModelOnCurrrentImage();
 
+        // ---------------------
         // Initialize ML model resources
         context = new MLContext();
         mlData = context.Data.LoadFromEnumerable(new List<StopSignInput>());
@@ -147,7 +156,11 @@ public class MeadowApp : App<Desktop>
             outputColumnName: "image_tensor", 
             imageWidth: ImageSettings.imageWidth, 
             imageHeight: ImageSettings.imageHeight, 
-            inputColumnName: nameof(StopSignInput.image)).Append(context.Transforms.ExtractPixels(outputColumnName: "image_tensor")).Append(context.Transforms.ApplyOnnxModel(outputColumnNames: new string[] { "detected_boxes", "detected_scores", "detected_classes" }, inputColumnNames: new string[] { "image_tensor" }, modelFile: "./model.onnx"));
+            inputColumnName: nameof(StopSignInput.image))
+                                .Append(context.Transforms.ExtractPixels(outputColumnName: "image_tensor"))
+                                .Append(context.Transforms.ApplyOnnxModel(outputColumnNames: new string[] { "detected_boxes", "detected_scores", "detected_classes" },
+                                                                          inputColumnNames: new string[] { "image_tensor" },
+                                                                          modelFile: "./model.onnx"));
 
         model = pipeline.Fit(mlData);
 
